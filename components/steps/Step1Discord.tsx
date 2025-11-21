@@ -7,8 +7,8 @@ export const Step1Discord: React.FC<StepProps> = ({ onNext }) => {
   const handleJoin = () => {
     // Open Discord in new tab
     window.open('https://discord.gg/Cpj6NhHf', '_blank');
-    // Proceed to next step
-    onNext();
+    // Proceed to next step after a brief delay to allow interaction
+    setTimeout(onNext, 500);
   };
 
   return (
@@ -22,12 +22,14 @@ export const Step1Discord: React.FC<StepProps> = ({ onNext }) => {
       </h2>
       
       <p className="text-slate-300 mb-8 max-w-md font-light leading-relaxed">
-        Join the Stacks AI Guild neural network on Discord. This is your primary communication hub for the Bootcamp.
+        Join the <strong className="text-white font-semibold">Stacks AI Guild</strong> neural network. 
+        <br /><br />
+        <span className="text-neon-blue/90">Directive:</span> Once joined, head to the <code className="bg-white/10 px-1 py-0.5 rounded text-neon-purple text-xs">#introductions</code> channel to verify your presence.
       </p>
 
       <button
         onClick={handleJoin}
-        className="group relative px-8 py-4 bg-white text-black font-display font-bold tracking-wider uppercase rounded-lg overflow-hidden hover:bg-neon-blue transition-colors duration-300"
+        className="group relative px-8 py-4 bg-white text-black font-display font-bold tracking-wider uppercase rounded-lg overflow-hidden hover:bg-neon-blue transition-colors duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
       >
         <span className="relative z-10 flex items-center gap-2">
           Join Discord Server <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -37,8 +39,8 @@ export const Step1Discord: React.FC<StepProps> = ({ onNext }) => {
         <div className="absolute inset-0 bg-neon-blue opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
       </button>
       
-      <p className="mt-4 text-xs text-slate-500">
-        Opens in a new terminal window
+      <p className="mt-6 text-[10px] md:text-xs text-slate-500 uppercase tracking-widest">
+        Step 1 of 3
       </p>
     </GlassCard>
   );

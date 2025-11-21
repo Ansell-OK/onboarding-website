@@ -3,13 +3,14 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 export const ParticleBackground: React.FC = () => {
-  const count = 2000;
+  // Reduced count slightly for better mobile performance while maintaining density
+  const count = 1500;
   const mesh = useRef<THREE.Points>(null!);
 
   const particlesPosition = useMemo(() => {
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const d = 10; // Spread
+      const d = 12; // Increased spread slightly
       const x = (Math.random() - 0.5) * d;
       const y = (Math.random() - 0.5) * d;
       const z = (Math.random() - 0.5) * d;
@@ -19,13 +20,20 @@ export const ParticleBackground: React.FC = () => {
   }, [count]);
 
   useFrame((state) => {
-    const { clock } = state;
+    const { clock, mouse } = state;
     const time = clock.getElapsedTime();
     
-    // Rotation
     if (mesh.current) {
-      mesh.current.rotation.y = time * 0.05;
-      mesh.current.rotation.x = time * 0.02;
+      // Gentle continuous rotation
+      mesh.current.rotation.y = time * 0.03;
+      
+      // Subtle parallax effect based on mouse position
+      // We use lerping for smoothness would be ideal, but simple mapping works for this style
+      const targetX = -mouse.y * 0.1;
+      const targetY = mouse.x * 0.1;
+      
+      mesh.current.rotation.x += (targetX - mesh.current.rotation.x) * 0.05;
+      mesh.current.rotation.y += (targetY - mesh.current.rotation.y) * 0.05;
     }
   });
 
@@ -40,12 +48,13 @@ export const ParticleBackground: React.FC = () => {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.03}
+        size={0.025}
         color="#00f3ff"
         sizeAttenuation={true}
         transparent={true}
-        opacity={0.6}
+        opacity={0.5}
         blending={THREE.AdditiveBlending}
+        depthWrite={false}
       />
     </points>
   );
